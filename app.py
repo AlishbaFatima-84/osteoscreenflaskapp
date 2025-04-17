@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
-# make changes 
+
 app = Flask(__name__)
 CORS(app)
 
@@ -173,3 +173,4 @@ def get_patient_history():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

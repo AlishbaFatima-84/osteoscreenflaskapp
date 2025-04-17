@@ -93,3 +93,4 @@ def create_cropped_image_test(image, bbox):
         cropped = np.expand_dims(cropped, axis=-1)
     roi_image = np.expand_dims(cropped, axis=0)
 
+    return roi_image
