@@ -5,7 +5,7 @@ flask_sqlalchemy==3.1.1
 python-dotenv==1.0.1
 
 # ML & Image Processing
-numpy==1.24.4
+numpy>=1.22,<1.25
 opencv-python==4.8.0.76
 pandas==2.2.2
 Pillow==9.5.0
