@@ -68,4 +68,4 @@ jobs:
         with:
           app-name: 'osteoscreen'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9495B43F41C146299219C2F94F8F666A }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
