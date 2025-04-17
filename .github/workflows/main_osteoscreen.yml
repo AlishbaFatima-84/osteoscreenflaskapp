@@ -76,6 +76,6 @@ jobs:
         with:
           app-name: 'osteoscreen'
           slot-name: 'Production'
-          package: .
+          package: release.zip 
 
           
