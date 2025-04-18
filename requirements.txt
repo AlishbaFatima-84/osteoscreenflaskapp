@@ -1,10 +1,10 @@
-# Core backend
+# --- Core backend ---
 Flask==3.1.0
 flask-cors==5.0.1
 flask_sqlalchemy==3.1.1
 python-dotenv==1.0.1
 
-# ML & Image Processing
+# --- ML & Image Processing ---
 numpy>=1.22,<1.25
 opencv-python==4.8.0.76
 pandas==2.2.2
@@ -12,18 +12,18 @@ Pillow==9.5.0
 scikit-learn==1.3.2
 xgboost==2.0.3
 
-# Deep learning (custom models)
+# --- Deep Learning (Keras/TensorFlow Models) ---
 tensorflow==2.13.0
 keras==2.13.1
 
-# Azure Storage (if loading models from Blob)
+# --- Azure Blob Storage ---
 azure-storage-blob==12.19.1
-azure-identity
+azure-identity==1.15.0  # ✅ specify to avoid resolution issues
 
-# For safely loading PyTorch YOLOv5 models if needed
+# --- PyTorch for YOLOv5 ---
 torch==2.0.1
 torchvision==0.15.2
-matplotlib==3.7.1
+matplotlib==3.7.1  # needed for torchvision
 
-# Utilities
+# --- Production WSGI Server ---
 gunicorn==21.2.0
