@@ -17,21 +17,23 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Create virtual environment & install dependencies
+      - name: Install dependencies
         run: |
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Zip source for deployment (exclude venv)
-        run: zip -r release.zip . -x "venv/*"
+      - name: Create ZIP package (excluding venv and .git)
+        run: |
+          zip -r release.zip . -x "venv/*" ".git/*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -44,19 +46,23 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-    
+
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
-    
-      - name: Deploy to Azure Web App via Kudu ZIP Deploy (No Oryx, No OneDeploy)
+      - name: List downloaded files (debugging)
+        run: ls -la
+
+      - name: Deploy to Azure Web App using publish profile
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'osteoscreen'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B103C870D4274DD78C8CF20922BEE9B7 }}
+          package: release.zip
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B103C870D4274DD78C8CF20922BEE9B7 }}
           package: release.zip
 
