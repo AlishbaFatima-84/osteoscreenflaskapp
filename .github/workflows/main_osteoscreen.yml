@@ -69,3 +69,4 @@ jobs:
           app-name: 'osteoscreen'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6F557C034C144F8BA45F68040325E413 }}
+          package: release.zip
