@@ -54,7 +54,7 @@ def test_yolo(image_input, model_path, output_dir):
     else:
         raise ValueError("Unsupported image input format")
 
-    print(f"📸 Running detection on: {image_path}")
+    print(f"Running detection on: {image_path}")
 
     #  Step 2: Run YOLOv5 Detection
     detect.run(
@@ -78,16 +78,16 @@ def test_yolo(image_input, model_path, output_dir):
 
     #  Step 4: Read label file
     predictions_dir = output_dir / 'exp' / 'labels'
-    print(f"🔍 Looking for labels in: {predictions_dir}")
+    print(f"Looking for labels in: {predictions_dir}")
     label_file_paths = glob.glob(str(predictions_dir / '*.txt'))
 
     if not label_file_paths:
-        print("❌ No label files found.")
+        print("No label files found.")
         return None
 
     print(f" Found label file: {label_file_paths[0]}")
     bounding_boxes = Load_Predicated_ROI_Labels(label_file_paths[0])
-    print("📦 Bounding box details:", bounding_boxes)
+    print("Bounding box details:", bounding_boxes)
 
     return bounding_boxes
 
