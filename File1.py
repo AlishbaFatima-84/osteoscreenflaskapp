@@ -19,7 +19,7 @@ def load_detect_module():
     yolov5_dir = os.path.abspath("yolov5")
     detect_path = os.path.join(yolov5_dir, "detect.py")
 
-    # ✅ Ensure yolov5 directory is in sys.path
+    # Ensure yolov5 directory is in sys.path
     if yolov5_dir not in sys.path:
         sys.path.insert(0, yolov5_dir)
 
@@ -29,14 +29,14 @@ def load_detect_module():
     return detect
 
 def test_yolo(image_input, model_path, output_dir):
-    # ✅ Dynamically load detect module from yolov5/detect.py
+    # Dynamically load detect module from yolov5/detect.py
     detect = load_detect_module()
 
     model_path = Path(model_path)
     output_dir = Path(output_dir)
     temp_path = None
 
-    # ✅ Step 1: Process grayscale normalized image (shape = 224x224, float32)
+    # Step 1: Process grayscale normalized image (shape = 224x224, float32)
     if isinstance(image_input, np.ndarray):
         if image_input.max() <= 1.0:
             image_input = (image_input * 255).astype(np.uint8)
@@ -56,7 +56,7 @@ def test_yolo(image_input, model_path, output_dir):
 
     print(f"📸 Running detection on: {image_path}")
 
-    # ✅ Step 2: Run YOLOv5 Detection
+    #  Step 2: Run YOLOv5 Detection
     detect.run(
         weights=str(model_path),
         source=str(image_path),
@@ -70,13 +70,13 @@ def test_yolo(image_input, model_path, output_dir):
         exist_ok=True
     )
 
-    print(f"✅ Detection complete. Results saved to: {output_dir/'exp'}")
+    print(f" Detection complete. Results saved to: {output_dir/'exp'}")
 
-    # ✅ Step 3: Clean up temp image
+    #  Step 3: Clean up temp image
     if temp_path and os.path.exists(temp_path):
         os.remove(temp_path)
 
-    # ✅ Step 4: Read label file
+    #  Step 4: Read label file
     predictions_dir = output_dir / 'exp' / 'labels'
     print(f"🔍 Looking for labels in: {predictions_dir}")
     label_file_paths = glob.glob(str(predictions_dir / '*.txt'))
@@ -85,7 +85,7 @@ def test_yolo(image_input, model_path, output_dir):
         print("❌ No label files found.")
         return None
 
-    print(f"✅ Found label file: {label_file_paths[0]}")
+    print(f" Found label file: {label_file_paths[0]}")
     bounding_boxes = Load_Predicated_ROI_Labels(label_file_paths[0])
     print("📦 Bounding box details:", bounding_boxes)
 
@@ -200,29 +200,29 @@ def integration(file_path, Features):
     config_dir = "config"
     os.makedirs(model_dir, exist_ok=True)
 
-    # ✅ Step 1: Download models from Azure Blob if not already present
+    # Step 1: Download models from Azure Blob if not already present
     download_model_if_needed("yolo.pt", f"{model_dir}/yolo.pt")
-    download_model_if_needed("bmd_model.h5", f"{model_dir}/bmd_model.h5")
-    download_model_if_needed("T_Score_model.h5", f"{model_dir}/T_Score_model.h5")
-    download_model_if_needed("Z_Score_model.h5", f"{model_dir}/Z_Score_model.h5")
-    download_model_if_needed("WHO_model.h5", f"{model_dir}/WHO_model.h5")
+    download_model_if_needed("bmd_model_with_features.h5", f"{model_dir}/bmd_model_with_features.h5")
+    download_model_if_needed("T_Score_model_with_features.h5", f"{model_dir}/T_Score_model_with_features.h5")
+    download_model_if_needed("Z_Score_model_with_features.h5", f"{model_dir}/Z_Score_model_with_features.h5")
+    download_model_if_needed("WHO_model_with_features.h5", f"{model_dir}/WHO_model_with_features.h5")
 
-    # ✅ Step 2: Download JSON configs (optional but recommended)
+    # Step 2: Download JSON configs (optional but recommended)
     os.makedirs(config_dir, exist_ok=True)
     download_model_if_needed("T_Score_normalization_params.json", f"{config_dir}/T_Score_normalization_params.json")
     download_model_if_needed("Z_Score_normalization_params.json", f"{config_dir}/Z_Score_normalization_params.json")
 
-    # ✅ Step 3: Set paths as usual
+    # Step 3: Set paths as usual
     predicated_bbox_output_file = "static"
     yolo_model_path = f"{model_dir}/yolo.pt"
-    bmd_model_path = f"{model_dir}/bmd_model.h5"
-    T_score_model_path = f"{model_dir}/T_score_model.h5"
-    Z_score_model_path = f"{model_dir}/Z_score_model.h5"
-    WHO_model_path = f"{model_dir}/WHO_model.h5"
+    bmd_model_path = f"{model_dir}/bmd_model_with_features.h5"
+    T_score_model_path = f"{model_dir}/T_Score_model_with_features.h5"
+    Z_score_model_path = f"{model_dir}/Z_Score_model_with_features.h5"
+    WHO_model_path = f"{model_dir}/WHO_model_with_features.h5"
     T_score_json_path = f"{config_dir}/T_Score_normalization_params.json"
     Z_score_json_path = f"{config_dir}/Z_Score_normalization_params.json"
 
-    # ✅ Step 4: Continue as usual
+    # Step 4: Continue as usual
     bmd,T_score,Z_score,WHO_classification,Fracture_risk = testing_models(
         predicated_bbox_output_file,
         yolo_model_path,
@@ -236,7 +236,3 @@ def integration(file_path, Features):
         Features
     )
     return bmd,T_score,Z_score,WHO_classification,Fracture_risk 
-
-
-
-
