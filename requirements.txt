@@ -11,7 +11,7 @@ pandas==2.2.2
 Pillow==9.5.0
 scikit-learn==1.3.2
 xgboost==2.0.3
-
+pyodbc
 # --- Deep Learning (Keras/TensorFlow Models) ---
 tensorflow==2.13.0
 keras==2.13.1
