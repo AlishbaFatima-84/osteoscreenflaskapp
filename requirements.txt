@@ -1,29 +1,29 @@
 # --- Core backend ---
 Flask==3.1.0
-flask-cors==5.0.1
+flask-cors==5.0.0
 flask_sqlalchemy==3.1.1
-python-dotenv==1.0.1
+python-dotenv==1.1.0
 
 # --- ML & Image Processing ---
-numpy>=1.22,<1.25
-opencv-python==4.8.0.76
-pandas==2.2.2
-Pillow==9.5.0
-scikit-learn==1.3.2
-xgboost==2.0.3
-pyodbc
+numpy=2.0.2
+opencv-python==4.11.0.86
+pandas==2.2.3
+Pillow==11.1.0
+scikit-learn==1.6.1
+xgboost==3.0.0
+pyodbc= 5.2.0
 # --- Deep Learning (Keras/TensorFlow Models) ---
-tensorflow==2.13.0
-keras==2.13.1
+tensorflow==2.18.0
+keras==3.8.0
 
 # --- Azure Blob Storage ---
-azure-storage-blob==12.19.1
-azure-identity==1.15.0  # ✅ specify to avoid resolution issues
+azure-storage-blob==12.25.1
+azure-identity==1.21.0  # ✅ specify to avoid resolution issues
 
 # --- PyTorch for YOLOv5 ---
-torch==2.0.1
-torchvision==0.15.2
-matplotlib==3.7.1  # needed for torchvision
+torch==2.6.0
+torchvision==0.21.0
+matplotlib==3.10.0  # needed for torchvision
 
 # --- Production WSGI Server ---
-gunicorn==21.2.0
+gunicorn==23.0.0
