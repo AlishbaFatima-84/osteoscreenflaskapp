@@ -27,3 +27,4 @@ matplotlib==3.10.0  # needed for torchvision
 
 # --- Production WSGI Server ---
 gunicorn==23.0.0
+uvicorn
