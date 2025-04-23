@@ -58,6 +58,11 @@ with app.app_context():
 def to_float(value):
     return float(value[0]) if isinstance(value, np.ndarray) else float(value)
 
+# ✅ Default route to verify Flask is running
+@app.route('/', methods=['GET'])
+def home():
+    return "✅ Flask API is running for OsteoScreen."
+
 # ✅ Route to handle prediction and saving
 @app.route('/api', methods=['POST'])
 def sendDataToAPI():
