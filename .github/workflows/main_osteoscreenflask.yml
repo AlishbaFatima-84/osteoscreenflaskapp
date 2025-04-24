@@ -2,6 +2,8 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
+
+
 name: Build and deploy Python app to Azure Web App - osteoscreenflask
 
 on:
@@ -23,11 +25,10 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 📦 Install dependencies (build only)
+      - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip freeze > requirements.txt
 
       - name: 📝 Create startup.sh
         run: |
@@ -36,13 +37,12 @@ jobs:
           echo "🔁 Creating or activating virtualenv"
           if [ ! -d "antenv" ]; then
               python -m venv antenv
-              . antenv/bin/activate
-              pip install -r requirements.txt
-          else
-              . antenv/bin/activate
           fi
+          . antenv/bin/activate
+          pip install -r requirements.txt
+
           echo "🚀 Launching app via Gunicorn"
-          exec antenv/bin/gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
+          exec gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
           EOF
           chmod +x startup.sh
 
@@ -72,6 +72,9 @@ jobs:
         with:
           name: python-app
 
+      - name: 📂 Unzip release
+        run: unzip release.zip -d app
+
       - name: 🔐 Azure Login
         uses: azure/login@v2
         with:
@@ -84,7 +87,7 @@ jobs:
           az webapp config set \
             --resource-group OsteoScreen-Resource \
             --name osteoscreenflask \
-            --startup-file "bash startup.sh"
+            --startup-file "startup.sh"
 
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -93,4 +96,3 @@ jobs:
           app-name: 'osteoscreenflask'
           slot-name: 'Production'
          
-
