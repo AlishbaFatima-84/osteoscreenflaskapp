@@ -3,6 +3,9 @@
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
 
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
 name: Build and deploy Python app to Azure Web App - osteoscreenflask
 
@@ -15,6 +18,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: 📥 Checkout code
@@ -30,27 +35,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 📝 Create startup.sh
+      - name: 🗜️ Zip entire project (exclude virtual env, git, __pycache__)
         run: |
-          cat > startup.sh << 'EOF'
-          #!/bin/sh
-          echo "🔁 Creating or activating virtualenv"
-          if [ ! -d "antenv" ]; then
-              python -m venv antenv
-          fi
-          . antenv/bin/activate
-          pip install -r requirements.txt
+          zip -r release.zip . \
+            -x "venv/*" "antenv/*" ".git/*" "__pycache__/*" ".github/*"
 
-          echo "🚀 Launching app via Gunicorn"
-          exec gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
-          EOF
-          chmod +x startup.sh
-
-      - name: 🗜️ Zip project
-        run: |
-          zip -r release.zip . -x "venv/*" ".git/*" "__pycache__/*" ".github/*" "*.env"
-
-      - name: ⬆️ Upload artifact
+      - name: ⬆️ Upload zipped project
         uses: actions/upload-artifact@v4
         with:
           name: python-app
@@ -72,8 +62,8 @@ jobs:
         with:
           name: python-app
 
-      - name: 📂 Unzip release
-        run: unzip release.zip -d app
+      - name: 📂 Unzip app
+        run: unzip release.zip
 
       - name: 🔐 Azure Login
         uses: azure/login@v2
@@ -82,17 +72,13 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3613A6EA558E4C0EADA95343125D2D3A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E2A3B9FE04374E9BA9BA68FC07D02820 }}
 
-      - name: ⚙️ Set startup command
-        run: |
-          az webapp config set \
-            --resource-group OsteoScreen-Resource \
-            --name osteoscreenflask \
-            --startup-file "startup.sh"
-
-      - name: 🚀 Deploy to Azure Web App
+      - name: 🚀 Deploy to Azure Web App (entire directory)
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'osteoscreenflask'
           slot-name: 'Production'
+         
+
+
          
