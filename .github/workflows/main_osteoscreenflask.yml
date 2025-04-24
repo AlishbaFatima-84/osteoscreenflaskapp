@@ -37,6 +37,7 @@ jobs:
 
       - name: 🚀 Deploy to Azure Web App using Oryx
         uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
         with:
           app-name: 'osteoscreenflask'          # Replace with your Azure Web App name
           slot-name: 'Production'               # Or staging slot name if used
