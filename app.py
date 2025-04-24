@@ -24,7 +24,7 @@ from urllib.parse import quote_plus
 db_password_encoded = quote_plus(db_password)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f'mssql+pyodbc://{db_user}:{db_password_encoded}@{db_server}:1433/{db_name}?driver=ODBC+Driver+17+for+SQL+Server'
+    f'mssql+pyodbc://{db_user}:{db_password_encoded}@{db_server}:1433/{db_name}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes'
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
