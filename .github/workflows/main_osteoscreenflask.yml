@@ -23,11 +23,9 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 📦 Install dependencies
+      - name: 📦 Install dependencies (build only)
         run: |
           python -m pip install --upgrade pip
-          python -m venv antenv
-          . antenv/bin/activate
           pip install -r requirements.txt
           pip freeze > requirements.txt
 
@@ -35,6 +33,7 @@ jobs:
         run: |
           cat > startup.sh << 'EOF'
           #!/bin/sh
+          echo "🔁 Creating or activating virtualenv"
           if [ ! -d "antenv" ]; then
               python -m venv antenv
               . antenv/bin/activate
@@ -42,7 +41,8 @@ jobs:
           else
               . antenv/bin/activate
           fi
-          exec gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
+          echo "🚀 Launching app via Gunicorn"
+          exec antenv/bin/gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
           EOF
           chmod +x startup.sh
 
@@ -84,7 +84,7 @@ jobs:
           az webapp config set \
             --resource-group OsteoScreen-Resource \
             --name osteoscreenflask \
-            --startup-file "./startup.sh"
+            --startup-file "bash startup.sh"
 
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -92,5 +92,5 @@ jobs:
         with:
           app-name: 'osteoscreenflask'
           slot-name: 'Production'
-          package: release.zip
+         
 
