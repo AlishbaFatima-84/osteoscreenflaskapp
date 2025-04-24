@@ -26,11 +26,8 @@ jobs:
         run: |
           rm -rf antenv venv .venv __pycache__ .python_packages
 
-      - name: 🐍 Verify Python version (optional)
+      - name: 🐍 (Optional) Check Python version
         run: python --version
-
-      - name: 📂 List project files (optional)
-        run: ls -la
 
       - name: 🔐 Azure Login
         uses: azure/login@v2
@@ -39,12 +36,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3613A6EA558E4C0EADA95343125D2D3A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E2A3B9FE04374E9BA9BA68FC07D02820 }}
 
-      - name: 🚀 Deploy to Azure Web App using Oryx
+      - name: 🚀 Deploy to Azure Web App using Oryx (Auto-install requirements.txt)
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'osteoscreenflask'
           slot-name: 'Production'
-        
 
          
 
