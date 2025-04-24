@@ -1,4 +1,3 @@
-cat > startup.sh << 'EOF'
 #!/bin/sh
 echo "🔁 Creating or activating virtualenv"
 if [ ! -d "antenv" ]; then
@@ -8,7 +7,4 @@ fi
 pip install -r requirements.txt
 
 echo "🚀 Launching app via Gunicorn"
-exec gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
-EOF
-
-chmod +x startup.sh
+exec gunicorn --bind=0.0.0.0:${PORT:-5000} app:app
