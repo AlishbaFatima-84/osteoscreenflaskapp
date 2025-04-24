@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://osteoscreen.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_d0e797b5f7844ddca682a2ea830e94b9 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_8a8b9a86cb8f47888b3751ed2a5a3ee2 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_4cb5eaa1834c4155962899162fa12748 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_0b309abd410f4cc6960ecdf5378dfc3f }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: osteoscreen.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d0e797b5f7844ddca682a2ea830e94b9 }}/osteoscreen:${{ github.sha }}
+        tags: osteoscreen.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4cb5eaa1834c4155962899162fa12748 }}/osteoscreen:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'osteoscreen'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_69fa2a6342f74517a4360e13553e47ac }}
-        images: 'osteoscreen.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d0e797b5f7844ddca682a2ea830e94b9 }}/osteoscreen:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_78629965d9e3487ea049883a9248e463 }}
+        images: 'osteoscreen.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4cb5eaa1834c4155962899162fa12748 }}/osteoscreen:${{ github.sha }}'
