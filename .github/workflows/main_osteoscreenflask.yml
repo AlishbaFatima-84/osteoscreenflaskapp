@@ -28,6 +28,20 @@ jobs:
           pip install -r requirements.txt
           pip freeze > requirements.txt  # Lock exact versions
 
+      # Create a startup script file
+      - name: 📝 Create startup script
+        run: |
+          cat > startup.sh << 'EOL'
+          #!/bin/bash
+          if [ ! -d "antenv" ]; then
+              python -m venv antenv
+              source antenv/bin/activate
+              pip install -r requirements.txt
+          fi
+          gunicorn --bind=0.0.0.0:${PORT:-8000} app:app
+          EOL
+          chmod +x startup.sh
+          
       - name: 🗜️ Zip project (Linux)
         run: |
           zip -r release.zip . -x "venv/*" ".git/*" "__pycache__/*" ".github/*" "*.env"
@@ -66,7 +80,7 @@ jobs:
           az webapp config set \
             --resource-group OsteoScreen-Resource \
             --name osteoscreenflask \
-             --startup-file "bash -c 'if [ ! -d \"antenv\" ]; then python -m venv antenv && source antenv/bin/activate && pip install -r requirements.txt; fi && gunicorn --bind=0.0.0.0:\${PORT:-5000} app:app'"
+             --startup-file "bash startup.sh"
 
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
